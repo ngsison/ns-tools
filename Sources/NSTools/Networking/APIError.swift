@@ -1,4 +1,4 @@
-enum APIError: Error {
+public enum APIError: Error {
     case invalidURL
     case noResponse
     case encodableMapping(_ error: Error)

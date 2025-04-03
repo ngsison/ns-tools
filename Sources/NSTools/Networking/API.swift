@@ -1,6 +1,6 @@
 import Foundation
 
-protocol API {
+public protocol API {
     var baseURL: String { get }
     var path: String { get }
     var method: APIMethod { get }
@@ -10,7 +10,7 @@ protocol API {
 }
 
 extension API {
-    func buildRequest() throws -> URLRequest {
+    public func buildRequest() throws -> URLRequest {
         let url = try buildUrl()
         
         var request = URLRequest(url: url)

@@ -1,4 +1,4 @@
-enum APIMethod: String {
+public enum APIMethod: String {
     case GET
     case POST
     case PUT
