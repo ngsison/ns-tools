@@ -24,11 +24,8 @@ extension API {
     private func buildUrl() throws -> URL {
         var urlComponents = URLComponents(string: baseURL)
         urlComponents?.path = path
-        
-        if method == .GET {
-            urlComponents?.queryItems = urlParameters.compactMap { key, value in
-                URLQueryItem(name: key, value: value)
-            }
+        urlComponents?.queryItems = urlParameters.compactMap { key, value in
+            URLQueryItem(name: key, value: value)
         }
         
         guard let url = urlComponents?.url else {
