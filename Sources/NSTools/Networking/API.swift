@@ -42,7 +42,7 @@ extension API {
     }
     
     private func buildBody() throws -> Data? {
-        guard method == .POST else { return nil }
+        guard method == .POST || method == .PUT else { return nil }
         
         switch body {
         case .encodable(let encodable):
