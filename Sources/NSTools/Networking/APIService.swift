@@ -11,7 +11,7 @@ extension APIService {
         return try await performRequest(api: api)
     }
     
-    func request<T: Decodable>(api: API, responseType: T.Type) async throws -> T {
+    public func request<T: Decodable>(api: API, responseType: T.Type) async throws -> T {
         let result = try await performRequest(api: api)
         do {
             let decodedObject = try JSONDecoder().decode(responseType, from: result.data!)
