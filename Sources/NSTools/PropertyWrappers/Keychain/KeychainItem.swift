@@ -15,8 +15,8 @@ public struct KeychainItem {
             storage.get(key)
         }
         set {
-            if let unwrappedValue = newValue, !unwrappedValue.isEmpty {
-                storage.set(unwrappedValue, forKey: key)
+            if let newValue, !newValue.isEmpty {
+                storage.set(newValue, forKey: key)
             } else {
                 storage.delete(key)
             }

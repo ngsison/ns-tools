@@ -26,3 +26,9 @@ public struct UserDefaultsItem<T> {
         }
     }
 }
+
+public extension UserDefaultsItem where T: ExpressibleByNilLiteral {
+    public init(_ key: String) {
+        self.init(key, defaultValue: nil)
+    }
+}
