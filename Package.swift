@@ -12,9 +12,16 @@ let package = Package(
             name: "NSTools",
             targets: ["NSTools"]),
     ],
+    dependencies: [
+        .package(url: "https://github.com/evgenyneu/keychain-swift", .upToNextMajor(from: "24.0.0")),
+    ],
     targets: [
         .target(
-            name: "NSTools"),
+            name: "NSTools",
+            dependencies: [
+                .product(name: "KeychainSwift", package: "keychain-swift")
+            ]
+        ),
         .testTarget(
             name: "NSToolsTests",
             dependencies: ["NSTools"]
