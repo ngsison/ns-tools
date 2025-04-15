@@ -5,13 +5,13 @@ public struct UserDefaultsItem<T> {
     
     private let key: String
     private let storage: UserDefaults = .standard
+    private let defaultValue: T
     
     public init(_ key: String, defaultValue: T) {
         self.key = key
         self.defaultValue = defaultValue
     }
     
-    public let defaultValue: T
     public var wrappedValue: T {
         get {
             let value = storage.value(forKey: key) as? T
