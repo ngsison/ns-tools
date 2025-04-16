@@ -1,11 +1,16 @@
 import Foundation
 
 public protocol APIService {
+    func refreshToken() async throws
     func request(api: API) async throws -> APIResult
     func request<T: Decodable>(api: API, responseType: T.Type) async throws -> T
 }
 
 extension APIService {
+    public func refreshToken() async throws {
+        throw APIError.notImplemented
+    }
+    
     public func request(api: API) async throws -> APIResult {
         print("Starting request: \(api)")
         return try await performRequest(api: api)
@@ -44,7 +49,12 @@ extension APIService {
         case 200...299:
             return result
         case 401:
-            throw APIError.unauthorized(result)
+            do {
+                try await refreshToken()
+                return try await performRequest(api: api)
+            } catch {
+                throw APIError.unauthorized(result)
+            }
         default:
             throw APIError.statusCode(result)
         }
