@@ -19,8 +19,13 @@ extension APIService {
     public func request<T: Decodable>(api: API, responseType: T.Type) async throws -> T {
         print("Starting request with expected response type: \(responseType)")
         let result = try await performRequest(api: api)
+
+        guard let data = result.data else {
+            throw APIError.noResponse
+        }
+
         do {
-            let decodedObject = try JSONDecoder().decode(responseType, from: result.data!)
+            let decodedObject = try JSONDecoder().decode(responseType, from: data)
             print("Successfully decoded response of type: \(responseType)")
             print(decodedObject)
             return decodedObject
@@ -44,6 +49,12 @@ extension APIService {
         
         let result = APIResult(request: request, response: response, data: data)
         print("Received response with status code: \(result)")
+        
+        if let jsonObject = try? JSONSerialization.jsonObject(with: data),
+           let prettyData = try? JSONSerialization.data(withJSONObject: jsonObject, options: .prettyPrinted),
+           let prettyString = String(data: prettyData, encoding: .utf8) {
+            print("JSON Response:\n\(prettyString)")
+        }
         
         switch result.response.statusCode {
         case 200...299:
