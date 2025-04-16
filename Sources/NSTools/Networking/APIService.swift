@@ -3,7 +3,6 @@ import Foundation
 public protocol APIService {
     func request(api: API) async throws -> APIResult
     func request<T: Decodable>(api: API, responseType: T.Type) async throws -> T
-    func streamRequest(api: API) async throws -> AsyncThrowingStream<UInt8, Error>
 }
 
 extension APIService {
@@ -47,47 +46,6 @@ extension APIService {
         case 401:
             throw APIError.unauthorized(result)
         default:
-            throw APIError.statusCode(result)
-        }
-    }
-}
-
-extension APIService {
-    public func streamRequest(api: API) async throws -> AsyncThrowingStream<UInt8, Error> {
-        print("Starting stream request for API: \(api)")
-        let request = try api.buildRequest()
-        let (bytes, response) = try await URLSession.shared.bytes(for: request)
-        
-        guard let response = response as? HTTPURLResponse else {
-            print("No response received from server during streaming")
-            throw APIError.noResponse
-        }
-        
-        let result = APIResult(request: request, response: response)
-        print("Received streaming response with status code: \(response.statusCode)")
-        
-        switch result.response.statusCode {
-        case 200...299:
-            print("Stream started successfully")
-            return AsyncThrowingStream<UInt8, Error> { continuation in
-                Task {
-                    do {
-                        for try await byte in bytes {
-                            continuation.yield(byte)
-                        }
-                        print("Stream completed successfully")
-                        continuation.finish()
-                    } catch {
-                        print("Error during streaming: \(error)")
-                        continuation.finish(throwing: error)
-                    }
-                }
-            }
-        case 401:
-            print("Unauthorized stream request, status code 401")
-            throw APIError.unauthorized(result)
-        default:
-            print("Stream request failed with status code: \(response.statusCode)")
             throw APIError.statusCode(result)
         }
     }
