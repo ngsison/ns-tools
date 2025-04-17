@@ -1,6 +1,7 @@
 public enum APIError: Error {
     case invalidURL
     case noResponse
+    case noData
     case notImplemented
     case underlying(_ error: Error)
     case encodableMapping(_ error: Error)
