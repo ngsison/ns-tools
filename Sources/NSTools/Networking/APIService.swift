@@ -1,21 +1,24 @@
 import Foundation
 
-public protocol APIService {
+protocol APIServiceProtocol {
     func refreshToken() async throws
     func request(api: API) async throws -> APIResult
     func request<T: Decodable>(api: API, responseType: T.Type) async throws -> T
 }
 
-extension APIService {
-    public func refreshToken() async throws {
+open class APIService: APIServiceProtocol {
+    
+    public init() {}
+    
+    open func refreshToken() async throws {
         throw APIError.notImplemented
     }
     
-    public func request(api: API) async throws -> APIResult {
+    open func request(api: API) async throws -> APIResult {
         return try await performRequest(api: api)
     }
     
-    public func request<T: Decodable>(api: API, responseType: T.Type) async throws -> T {
+    open func request<T: Decodable>(api: API, responseType: T.Type) async throws -> T {
         let result = try await performRequest(api: api)
         
         guard let data = result.data else {
