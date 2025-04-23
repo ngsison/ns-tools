@@ -33,7 +33,7 @@ extension APIService {
         }
     }
     
-    private func performRequest(api: API) async throws -> APIResult {
+    private func performRequest(api: API, retry: Int = 1) async throws -> APIResult {
         let request = try api.buildRequest()
         
         print("[NSTools] API Request: \(request)")
@@ -58,9 +58,10 @@ extension APIService {
         case 200...299:
             return result
         case 401:
+            guard retry > 0 else { throw APIError.unauthorized(result) }
             do {
                 try await refreshToken()
-                return try await performRequest(api: api)
+                return try await performRequest(api: api, retry: retry - 1)
             } catch {
                 throw APIError.unauthorized(result)
             }
