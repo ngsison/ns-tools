@@ -1,5 +1,9 @@
 public extension String {
-    public func trim() -> String {
+    mutating public func trim() {
+        self = trimmed()
+    }
+    
+    public func trimmed() -> String {
         trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
