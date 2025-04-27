@@ -1,7 +1,6 @@
 import Foundation
 
 protocol APIServiceProtocol {
-    func refreshToken() async throws
     func request(api: API) async throws -> APIResult
     func request<T: Decodable>(api: API, responseType: T.Type) async throws -> T
 }
@@ -9,10 +8,6 @@ protocol APIServiceProtocol {
 open class APIService: APIServiceProtocol {
     
     public init() {}
-    
-    open func refreshToken() async throws {
-        throw APIError.notImplemented
-    }
     
     open func request(api: API) async throws -> APIResult {
         return try await performRequest(api: api)
@@ -36,7 +31,7 @@ open class APIService: APIServiceProtocol {
         }
     }
     
-    private func performRequest(api: API, retry: Int = 1) async throws -> APIResult {
+    private func performRequest(api: API) async throws -> APIResult {
         let request = try api.buildRequest()
         
         print("[NSTools] API Request: \(request)")
@@ -61,13 +56,7 @@ open class APIService: APIServiceProtocol {
         case 200...299:
             return result
         case 401:
-            guard retry > 0 else { throw APIError.unauthorized(result) }
-            do {
-                try await refreshToken()
-                return try await performRequest(api: api, retry: retry - 1)
-            } catch {
-                throw APIError.unauthorized(result)
-            }
+            throw APIError.unauthorized(result)
         default:
             throw APIError.statusCode(result)
         }
