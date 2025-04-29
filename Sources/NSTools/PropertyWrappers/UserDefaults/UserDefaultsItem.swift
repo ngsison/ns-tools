@@ -14,7 +14,7 @@ public struct UserDefaultsItem<T> {
     
     public var wrappedValue: T {
         get {
-            let value = storage.value(forKey: key) as? T
+            let value = storage.object(forKey: key) as? T
             return value ?? defaultValue
         }
         set {
