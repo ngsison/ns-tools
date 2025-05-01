@@ -13,14 +13,14 @@ public struct APIResult: Sendable {
 }
 
 public extension APIResult {
-    public static func mockSuccess() -> APIResult {
+    static func mockSuccess() -> APIResult {
         let url = URL(string: "https://mock.api")!
         let req = URLRequest(url: url)
         let res = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil, headerFields: nil)!
         return APIResult(request: req, response: res)
     }
     
-    public static func mockFailure(statusCode: Int = 500, body: String? = nil) -> APIResult {
+    static func mockFailure(statusCode: Int = 500, body: String? = nil) -> APIResult {
         let url = URL(string: "https://mock.api")!
         let req = URLRequest(url: url)
         let res = HTTPURLResponse(url: url, statusCode: statusCode, httpVersion: nil, headerFields: nil)!

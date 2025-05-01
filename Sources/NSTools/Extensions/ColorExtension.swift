@@ -1,7 +1,7 @@
 import SwiftUI
 
 public extension Color {
-    public init(hex: String) {
+    init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var int: UInt64 = 0
         Scanner(string: hex).scanHexInt64(&int)
@@ -14,7 +14,7 @@ public extension Color {
         case 8: // ARGB (32-bit)
             (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
         default:
-            (a, r, g, b) = (1, 1, 1, 0)
+            (a, r, g, b) = (0, 0, 0, 0)
         }
         
         self.init(

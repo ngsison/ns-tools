@@ -25,13 +25,13 @@ extension APIError: LocalizedError {
             return "No data"
         case .notImplemented:
             return "Not implemented"
-        case .underlying(let error):
+        case .underlying:
             return "Underlying error"
-        case .encodableMapping(let error):
+        case .encodableMapping:
             return "Encoding failed"
-        case .decodableMapping(let error):
+        case .decodableMapping:
             return "Decoding failed"
-        case .responseMapping(let result):
+        case .responseMapping:
             return "Invalid response format"
         case .unauthorized:
             return "Unauthorized"

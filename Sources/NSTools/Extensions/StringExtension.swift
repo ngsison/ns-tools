@@ -1,9 +1,9 @@
 public extension String {
-    mutating public func trim() {
+    mutating func trim() {
         self = trimmed()
     }
     
-    public func trimmed() -> String {
+    func trimmed() -> String {
         trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }

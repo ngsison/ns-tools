@@ -35,7 +35,7 @@ public struct UserDefaultsObject<T> where T: Codable {
 }
 
 public extension UserDefaultsObject where T: ExpressibleByNilLiteral {
-    public init(_ key: String) {
+    init(_ key: String) {
         self.init(key, defaultValue: nil)
     }
 }
